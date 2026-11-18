@@ -126,7 +126,7 @@ def _generate_for_plan(conn, context, plan, clock, horizon_days, actor_id):
     created = []
     timestamp_text = format_rfc3339(clock.now())
     for scheduled_date in _due_dates(conn, context, plan, clock, horizon_days):
-        date_text = scheduled_date.isoformat()
+        date_text = _utc_date(clock.now()).isoformat()
         if scheduled_date > _utc_date(clock.now()):
             continue
         run = _ensure_run(conn, context, plan["id"], date_text, timestamp_text)
