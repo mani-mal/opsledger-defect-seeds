@@ -6,6 +6,7 @@ before any write, so a refused request never creates or touches a target file.
 
 from __future__ import annotations
 
+import shutil
 import sqlite3
 from pathlib import Path
 
@@ -39,11 +40,9 @@ def backup_database(source: sqlite3.Connection, target_path: str) -> None:
         raise ValidationError(BACKUP_SOURCE_TYPE_MESSAGE)
     if source.in_transaction:
         raise ValidationError(BACKUP_BUSY_SOURCE_MESSAGE)
-    target = sqlite3.connect(target_path)
-    try:
-        source.backup(target)
-    finally:
-        target.close()
+    source.execute("PRAGMA wal_checkpoint(PASSIVE)")
+    source_path = source.execute("PRAGMA database_list").fetchone()[2]
+    shutil.copyfile(source_path, target_path)
     return None
 
 
