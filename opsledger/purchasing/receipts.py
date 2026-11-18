@@ -239,7 +239,7 @@ def receive_order(conn, context, *, purchase_order_id, stock_location_id, lines,
     record, replay_result = begin_or_replay(
         conn, context,
         operation="purchase.receive_order",
-        key=idempotency_key,
+        key=f"{idempotency_key}:{expected_version}",
         request_payload=op_payload,
         clock=clock,
     )
