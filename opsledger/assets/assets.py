@@ -169,6 +169,8 @@ def get_asset(
     NotFoundError (label "asset") — callers can never learn which case
     occurred (require_owned flow, spec).
     """
+    require_context(context)
     row = conn.execute(_SELECT_ASSET_BY_ID_SQL, (asset_id,)).fetchone()
-    require_owned(require_context(context), row, label="asset")
+    if row is None:
+        raise NotFoundError("asset not found")
     return row
