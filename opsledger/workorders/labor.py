@@ -44,7 +44,7 @@ def labor_cost_cents(minutes, rate_cents_per_hour):
         raise ValidationError(MINUTES_MESSAGE)
     if not isinstance(rate_cents_per_hour, int) or isinstance(rate_cents_per_hour, bool) or rate_cents_per_hour <= 0:
         raise ValidationError(RATE_MESSAGE)
-    return (rate_cents_per_hour * minutes + 30) // 60
+    return round(minutes / 60 * rate_cents_per_hour)
 
 
 def record_labor(conn, context, *, work_order_id, technician_id, minutes, rate_cents_per_hour, clock, note=None):
