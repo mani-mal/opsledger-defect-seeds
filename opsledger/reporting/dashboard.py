@@ -77,8 +77,8 @@ def dashboard(conn, context, *, actor) -> dict:
     for status in WORK_ORDER_STATUSES:
         by_status[status] = counts.get(status, 0)
     labor_row = _scalar_sum(
-        "SELECT COALESCE(SUM(cost_cents), 0) FROM labor_entries"
-        " WHERE organization_id = ?",
+        "SELECT COALESCE(SUM(le.cost_cents), 0) FROM labor_entries le"
+        " LEFT JOIN work_orders wo ON wo.id = le.work_order_id AND wo.organization_id = ?",
         conn,
         context,
     )
