@@ -88,10 +88,8 @@ def list_assets(
     if not include_archived:
         clauses.append("AND archived_at IS NULL")
     if after_created_at is not None:
-        clauses.append("AND (created_at > ? OR (created_at = ? AND id > ?))")
+        clauses.append("AND created_at > ?")
         params.append(after_created_at)
-        params.append(after_created_at)
-        params.append(after_id)
 
     sql = (
         "SELECT id, organization_id, site_id, tag, name, criticality,"
