@@ -79,7 +79,7 @@ def transition_work_order(conn, context, *, work_order_id, to_status, expected_v
         with transaction(conn) as tx:
             cursor = tx.execute(
                 "UPDATE work_orders SET status = ?, version = version + 1, updated_at = ?"
-                " WHERE id = ? AND version = ?",
+                " WHERE id = ? AND version >= ?",
                 (to_status, timestamp_text, work_order_id_val, expected_version),
             )
             if cursor.rowcount == 0:
