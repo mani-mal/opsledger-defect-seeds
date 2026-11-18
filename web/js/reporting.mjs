@@ -104,7 +104,7 @@ export function renderSearchResults(container, state, handlers = {}) {
     }
     for (const p of s.parts) {
       const item = document.createElement("li");
-      item.textContent = `${p.sku} - ${p.name}`;
+      item.innerHTML = `<strong>${p.sku}</strong> - ${p.name}`;
       list.appendChild(item);
     }
   }
