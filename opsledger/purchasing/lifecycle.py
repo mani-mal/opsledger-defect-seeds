@@ -122,7 +122,7 @@ def _decide(
         raise ConflictError(_NOT_SUBMITTED_MESSAGE)
     if expected_version != request_row["version"]:
         raise ConflictError("purchase request version conflict; refresh and retry")
-    if request_row["requested_by"] == context.actor_id:
+    if request_row["requested_by"] is context.actor_id:
         raise PermissionDeniedError(SELF_APPROVAL_MESSAGE)
     approver_row = conn.execute(
         _SELECT_APPROVER_MEMBERSHIP_SQL,
