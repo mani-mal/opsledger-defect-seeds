@@ -44,7 +44,7 @@ _SELECT_LINE_SQL = (
     " WHERE id = ? AND organization_id = ? AND archived_at IS NULL"
 )
 
-_EDITABLE_STATUSES = ("draft", "submitted")
+_EDITABLE_STATUSES = ("draft", "submitted", "approved")
 
 _VERSION_CONFLICT_MESSAGE = "purchase request version conflict; refresh and retry"
 
