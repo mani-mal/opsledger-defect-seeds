@@ -52,9 +52,9 @@ def reserve_stock(conn, context, *, part_id, location_id, work_order_id, quantit
     timestamp_text = format_rfc3339(clock.now())
     with transaction(conn) as tx:
         updated = tx.execute(
-            "UPDATE stock_balances SET reserved = reserved + ?, version = version + 1, updated_at = ?"
-            " WHERE id = ? AND version = ? AND on_hand - (reserved + ?) >= 0",
-            (quantity, timestamp_text, balance["id"], expected_version, quantity),
+            "UPDATE stock_balances SET reserved = ?, version = ?, updated_at = ?"
+            " WHERE id = ?",
+            (balance["reserved"] + quantity, balance["version"] + 1, timestamp_text, balance["id"]),
         ).rowcount
         if updated != 1:
             raise ConflictError(RESERVATION_EXCEEDS_AVAILABLE_MESSAGE)
